@@ -1,7 +1,44 @@
 const MAKE_WEBHOOK_URL = 'https://hook.eu2.make.com/cjlifl1ls08yxy51u7dgodf5ue5qowoo';
 
-let allData = []; // Optionnel si vous ne chargez plus tout au début
+let allData = []; 
 let map = null;
+
+// Gestion de la recherche via Make
+document.getElementById('searchForm').onsubmit = async (e) => {
+    e.preventDefault();
+    
+    const resultsCountDiv = document.getElementById('resultsCount');
+    resultsCountDiv.textContent = "Recherche en cours...";
+    
+    const searchData = {
+        nom: document.getElementById('searchInput').value,
+        ville: document.getElementById('locationInput').value,
+        statut: document.getElementById('statusSelect').value
+    };
+
+    try {
+        const response = await fetch(MAKE_WEBHOOK_URL, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(searchData)
+        });
+
+        if (response.ok) {
+            const results = await response.json();
+            resultsCountDiv.textContent = `${results.length} enregistrements trouvés`;
+            render(results); 
+        } else {
+            resultsCountDiv.textContent = "Le serveur Make a répondu avec une erreur";
+        }
+    } catch (error) {
+        console.error("Erreur détaillée:", error);
+        resultsCountDiv.textContent = "Erreur de connexion au serveur";
+    }
+};
+
+// --- EN DESSOUS, GARDEZ VOS FONCTIONS render(), showDetail() et getCleanImgUrl() ---
 
 // Fonction de rendu (inchangée pour garder votre graphisme)
 function render(data) {
@@ -104,4 +141,5 @@ function showDetail(item) {
 }
 
 document.querySelector('.close-btn').onclick = () => { document.getElementById('detailModal').style.display = "none"; };
+
 window.onclick = (e) => { if (e.target == document.getElementById('detailModal')) { document.getElementById('detailModal').style.display = "none"; } };
