@@ -1,4 +1,4 @@
-const MAKE_WEBHOOK_URL = 'https://hook.eu2.make.com/cjlifl1ls08yxy51u7dgodf5ue5qowoo';
+const MAKE_WEBHOOK_URL = 'https://hook.eu2.make.com/cavxth4is4u9urs2g14lked6ib331d7v';
 
 let map = null;
 
@@ -91,3 +91,4 @@ function showDetail(item) {
 
 document.querySelector('.close-btn').onclick = () => { document.getElementById('detailModal').style.display = "none"; };
 window.onclick = (e) => { if (e.target == document.getElementById('detailModal')) { document.getElementById('detailModal').style.display = "none"; } };
+
